@@ -1,0 +1,80 @@
+# .gitignore for Chimera-Automata
+
+# Sensitive files
+*.apk
+*.deb
+*.keystore
+*.png
+*.log
+*.db
+session_*
+chimera.keystore
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual Environment
+venv/
+env/
+ENV/
+.env
+.venv
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Temp files
+*.tmp
+*.temp
+/tmp/
+
+# Output directories (keep structure but not files)
+output/apks/*
+output/debs/*
+qr_codes/*
+logs/*
+db/*
+!output/apks/.gitkeep
+!output/debs/.gitkeep
+!qr_codes/.gitkeep
+!logs/.gitkeep
+!db/.gitkeep
+
+# Android/iOS factory temp files
+android_factory/payloads/*
+android_factory/decompiled/*
+ios_factory/payloads/*
+!android_factory/payloads/.gitkeep
+!android_factory/decompiled/.gitkeep
+!ios_factory/payloads/.gitkeep
